@@ -17,14 +17,17 @@ namespace WindowsFormsApplication6
             InitializeComponent();
         }
         int second=10;
+        int repeatTimes = 3;
         int lastsecond;
         String mins;
         String seconds;
         INIClass ini;
         private void Form2_Load(object sender, EventArgs e)
         {
-            ini = new INIClass(System.IO.Directory.GetCurrentDirectory().Substring(0, System.IO.Directory.GetCurrentDirectory().Length - 10)+"/jishiqi.ini");
-            second=(int)(float.Parse(ini.IniReadValue("time","min"))*60);
+            this.Opacity = 0.6;
+            //ini = new INIClass(System.IO.Directory.GetCurrentDirectory().Substring(0, System.IO.Directory.GetCurrentDirectory().Length - 10)+"/jishiqi.ini");
+            ini = new INIClass(System.AppDomain.CurrentDomain.BaseDirectory + "jishiqi.ini");
+            second =(int)(float.Parse(ini.IniReadValue("time","min"))*60);
             lastsecond = (int)(float.Parse(ini.IniReadValue("lasttime", "min")) * 60);
             this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
             this.Top = 0;
@@ -55,24 +58,37 @@ namespace WindowsFormsApplication6
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-                second--;
+            this.BackColor = Color.White;
+            second--;
+            if (second >= 0)
+            {
                 mins = (second / 60) < 10 ? ("0" + (second / 60).ToString()) : (second / 60).ToString();
                 seconds = (second % 60) < 10 ? ("0" + (second % 60).ToString()) : (second % 60).ToString();
                 label4.Text = mins + ":" + seconds;
-                if (second == 0)
-                {
-                    timer1.Enabled = false;
-                    this.Visible = false;
-                    Form3 f3=new Form3();
-                    f3.Show();
-                }
-                if (second == lastsecond)
-                {
-                    timer2.Start();
-                    label1.ForeColor = Color.White;
-                    label4.ForeColor = Color.White;
-                    this.BackColor = Color.Red;
-                }
+            }
+            else
+            {
+                int tempsecond = 0;
+                tempsecond = Math.Abs(second);
+                mins = (tempsecond / 60) < 10 ? ("-0" + (tempsecond / 60).ToString()) : ("-" + (tempsecond / 60)).ToString();
+                seconds = (tempsecond % 60) < 10 ? ("0" + (tempsecond) % 60).ToString() : (tempsecond % 60).ToString();
+                label4.Text = mins + ":" + seconds;
+            }
+
+            if (second == 0)
+            {
+                //timer1.Enabled = false;
+                //this.Visible = false;
+                //Form3 f3=new Form3();
+                //f3.Show();
+            }
+            if (second == lastsecond)
+            {
+                timer2.Start();
+                label1.ForeColor = Color.White;
+                label4.ForeColor = Color.White;
+                this.BackColor = Color.Red;
+            }
         }
 
         private Point offset;
@@ -95,7 +111,15 @@ namespace WindowsFormsApplication6
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            //this.WindowState = FormWindowState.Minimized;
+            timer1.Stop();
+            timer2.Stop();
+            repeatTimes = 3;
+            second = (int)(float.Parse(ini.IniReadValue("time", "min")) * 60);
+            mins = (second / 60) < 10 ? ("0" + (second / 60).ToString()) : (second / 60).ToString();
+            seconds = (second % 60) < 10 ? ("0" + (second % 60).ToString()) : (second % 60).ToString();
+            label4.Text = mins + ":" + seconds;
+            timer1.Start();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -117,20 +141,26 @@ namespace WindowsFormsApplication6
         }
 
         private void timer2_Tick(object sender, EventArgs e)
-        {          
-                        if (this.BackColor == Color.Red)
-                        {
-                            label1.ForeColor = Color.Black;
-                            label4.ForeColor = Color.Black;
-                            this.BackColor = Color.White;
-                            
-                        }
-                        else
-                        {
-                            label1.ForeColor = Color.White;
-                            label4.ForeColor = Color.White;
-                            this.BackColor = Color.Red;
-                        }
+        {
+            
+            if (this.BackColor == Color.Red)
+            {
+                label1.ForeColor = Color.Black;
+                label4.ForeColor = Color.Black;
+                this.BackColor = Color.White;
+
+            }
+            else
+            {
+                label1.ForeColor = Color.White;
+                label4.ForeColor = Color.White;
+                this.BackColor = Color.Red;
+            }
+            repeatTimes--;
+            if(repeatTimes<=0)
+            {
+                timer2.Stop();
+            }
         }
 
     }
