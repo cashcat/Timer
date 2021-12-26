@@ -60,9 +60,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(54, 190);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 12);
+            this.label1.Size = new System.Drawing.Size(125, 12);
             this.label1.TabIndex = 4;
-            this.label1.Text = "华南师范大学星巴克项目组制作";
+            this.label1.Text = "智能装备研发中心制作";
             // 
             // Form1
             // 
