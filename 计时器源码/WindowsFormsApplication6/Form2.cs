@@ -25,8 +25,9 @@ namespace WindowsFormsApplication6
         private void Form2_Load(object sender, EventArgs e)
         {
             this.Opacity = 0.6;
-            ini = new INIClass(System.IO.Directory.GetCurrentDirectory().Substring(0, System.IO.Directory.GetCurrentDirectory().Length - 10)+"/jishiqi.ini");
-            second=(int)(float.Parse(ini.IniReadValue("time","min"))*60);
+            //ini = new INIClass(System.IO.Directory.GetCurrentDirectory().Substring(0, System.IO.Directory.GetCurrentDirectory().Length - 10)+"/jishiqi.ini");
+            ini = new INIClass(System.AppDomain.CurrentDomain.BaseDirectory + "jishiqi.ini");
+            second =(int)(float.Parse(ini.IniReadValue("time","min"))*60);
             lastsecond = (int)(float.Parse(ini.IniReadValue("lasttime", "min")) * 60);
             this.Left = Screen.PrimaryScreen.WorkingArea.Width - this.Width;
             this.Top = 0;
